@@ -1,0 +1,20 @@
+1. Nesting is the process of placing child selectors and properties in the scope of a parent selector. This allows a programmer to draw DOM relationships and avoid repetition.
+2. Variables make it easy to update code and reference values by allowing you to assign an identifier to a value.
+   $translucent-white: rgba(255, 255, 255, 0.3)
+3. Sass Data Types include:Numbers,Strings,Booleans,null,Lists(类似于array),Maps(类似于object)
+4.Mixins are a powerful tool that allow you to keep your code DRY. Their ability to take in arguments, assign default values to those arguments, and accept said arguments in whatever format is most readable and convenient for you makes the mixin Sass's most popular directive.
+5.The & selector* is a Sass construct that allows for expressive flexibility by referencing the parent selector when working with CSS psuedo elements and classes.
+6.String interpolation is the glue that allows you to insert a string in the middle of another when it is in a variable format. Its applications vary, but the ability to interpolate is especially useful for passing in file names.
+7.Functions in Sass allow for an easier way to style pages, work with colors, and iterate on DOM elements.
+fade-out makes a color more transparent by taking a number between 0 and 1 and decreasing opacity, or the alpha channel, by that amount:
+$color: fade-out(blue, 0.5);
+The fade-in color function changes a color by increasing its opacity:
+$color: fade-in(blue, 0.5);
+The function adjust-hue($color, $degrees) changes the hue of a color by taking color and a number of degrees (usually between -360 degrees and 360 degrees), and rotate the color wheel by that amount.
+color functions:The operation is performed on the red, green, and blue components.It computes the answer by operating on every two digits.
+color: red+blue;//purple
+8.Having both for loops and each loops gives the programmer different formats to iterate on both lists and maps.
+@each $item in $list {}
+@for $i from $begin through $end {}
+9.The introduction of conditional statements allows you to create logic-based styling rules using SCSS.
+if($condition, $value-if-true, $value-if-false)
