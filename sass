@@ -1,9 +1,17 @@
-1. Nesting is the process of placing child selectors and properties in the scope of a parent selector. This allows a programmer to draw DOM relationships and avoid repetition.
-2. Variables make it easy to update code and reference values by allowing you to assign an identifier to a value.
+1. Nesting(嵌套) is the process of placing child selectors and properties in the scope of a parent selector. This allows a programmer to draw DOM relationships and avoid repetition.
+div{ h1{ color: red;}}
+p{ border: {color: red;}} //注意冒号
+2. Variables(变量) make it easy to update code and reference values by allowing you to assign an identifier to a value.
+   以$开头
    $translucent-white: rgba(255, 255, 255, 0.3)
+   如果变量需要镶嵌在字符串之中，就必须写在#{}之中
+   $side: left;
+   .rounded {border-#{$side}-radius: 5px;}
 3. Sass Data Types include:Numbers,Strings,Booleans,null,Lists(类似于array),Maps(类似于object)
 4.Mixins are a powerful tool that allow you to keep your code DRY. Their ability to take in arguments, assign default values to those arguments, and accept said arguments in whatever format is most readable and convenient for you makes the mixin Sass's most popular directive.
-5.The & selector* is a Sass construct that allows for expressive flexibility by referencing the parent selector when working with CSS psuedo elements and classes.
+5.The & selector* is a Sass construct that allows for expressive flexibility by referencing the parent selector when working with CSS psuedo elements and classes(伪类).
+在嵌套的代码块内，可以使用&引用父元素
+a{ &:hover{ color: blue}}
 6.String interpolation is the glue that allows you to insert a string in the middle of another when it is in a variable format. Its applications vary, but the ability to interpolate is especially useful for passing in file names.
 7.Functions in Sass allow for an easier way to style pages, work with colors, and iterate on DOM elements.
 fade-out makes a color more transparent by taking a number between 0 and 1 and decreasing opacity, or the alpha channel, by that amount:
@@ -11,10 +19,50 @@ $color: fade-out(blue, 0.5);
 The fade-in color function changes a color by increasing its opacity:
 $color: fade-in(blue, 0.5);
 The function adjust-hue($color, $degrees) changes the hue of a color by taking color and a number of degrees (usually between -360 degrees and 360 degrees), and rotate the color wheel by that amount.
-color functions:The operation is performed on the red, green, and blue components.It computes the answer by operating on every two digits.
-color: red+blue;//purple
+color functions:The operation is performed on the red, green, and blue components.It computes the answer by operating on every two digits.(SASS允许在代码中使用算式)
+color: red+blue;//purple 
+lighten(#cc3, 10%) // #d6d65c
+darken(#cc3, 10%) // #a3a329
+grayscale(#cc3) // #808080
+complement(#cc3) // #33c
 8.Having both for loops and each loops gives the programmer different formats to iterate on both lists and maps.
 @each $item in $list {}
+@each member in a, b, c, d {.#{$member} {background-image: url("/image/#{$member}.jpg");}}
 @for $i from $begin through $end {}
+@for $i from 1 to 10 {.border-#{$i} {border: #{$1}px solid blue;}
 9.The introduction of conditional statements allows you to create logic-based styling rules using SCSS.
 if($condition, $value-if-true, $value-if-false)
+p { 
+   @if 1+1==2 {border: 1px solid;} 
+   @if lightness($color) > 30% {
+      background-color: #000;
+   } @else {
+      background-color: #fff;
+   }
+   }
+10.Mixins(可以指定参数和缺省值) should only be used if they take in an argument, otherwise, you should extend(继承) the selector's rules, whether it be a class, id, or placeholder.//复用代码块
+   extend
+   .class1{ border: 1px solid #ddd;}
+   .class2{ @extend .class1; font-size: 120%;}
+   mixin
+   @mixin left($value: 10px) {float: left; margin-right: $value;}
+   div {@include left(20px);
+   @mixin rounded($vert, $horz, $radius: 10px) {
+      border-#{$vert}-#{$horz}-radius: $radius;
+　　　-moz-border-radius-#{$vert}#{$horz}: $radius;
+　　　-webkit-border-#{$vert}-#{$horz}-radius: $radius;
+　　}
+　　#navbar li {@include rounded(top, left);}
+　　#footer {@include rounded(top, left, 5px;}
+11.@import命令，用来插入外部文件
+@import "path/fiename.scss";
+@import "foo.css";//等同于css的import命令
+12.while循环
+$i: 6;
+@while $i > 0 {
+   .item-#{$i} {width: 2em*$i;}
+   $i: $i-2;
+}
+13.自定义函数
+@function double($n) {@return $n*2;}
+#sidebar {width: double(5px);}
