@@ -1,0 +1,62 @@
+require.js作为js的模块化加载
+基本API：
+ require定义三个变量：
+ 	define：定义模块
+ 	如果一个模块不依赖其他模块，那么可以直接定义在define()函数之中。如果这个模块还依赖其他模块，那么define()函数的第一个参数，必须是一个数组，指明该模块的依赖性。
+ 	define(['myLib'], function(myLib){
+　　　　function foo(){ myLib.doSomething();}
+　　　　return { foo : foo};
+　　});
+ 	require === requirejs： 加载依赖模块（数组），并执行加载完后的回调函数。
+ 	require(['moduleA', 'moduleB', 'moduleC'], function (moduleA, moduleB, moduleC){
+　　　　// some code here
+　　});
+	第一个参数是所依赖的模块（数组），第二个参数是回调函数，当前面指定的模块加载成功后，将被调用。加载的模块会以参数形式传入该函数，从而在回调函数内部就可以使用这些模块。
+ 	define(function(){function fun1(){alert('it works!');} fun1();}) //a.js
+ 	require(["js/a"], function(){alert("load finished")});
+加载文件:
+ 	require.config: 配置模块加载位置，可以配置多个路径
+ 	require.config({
+ 		paths:{
+ 			"jquery": ["http://libs.baidu.com/jquery/2.0.3/jquery", "js/jquery"],
+ 			//当百度的jquery没有加载成功时，会加载本地js目录下的jquery
+ 			"a": "js/a"
+ 		}
+ 	})
+ 	require(["jquery", "a"], function($){//$表示依赖jquery模块的输出变量
+ 		$(function(){
+ 			alert("load finished");
+ 		})
+ 	})
+全局配置：主数据,data-main属性在加载完require.js后处理指定的js
+ 	//main.js
+ 	require.config({
+ 		paths:{
+ 			"jquery": ["http://libs.baidu.com/jquery/2.0.3/jquery", "js/jquery"],
+ 			//当百度的jquery没有加载成功时，会加载本地js目录下的jquery
+ 			"a": "js/a"
+ 		}
+ 	})
+ 	<script data-main="js/main" src="js/require.js"></script>
+ 	//把require.config的配置加入到data-main后，可以使每一个页面都使用这个配置，然后页面中就可以直接使用require来加载所有的短模块名
+ 	//当script标签指定data-main属性时，require会默认的将data-main指定的js为根路径
+第三方模块：使用shim配置1.exports值（输出的变量名），表明这个模块外部调用时的名称2.deps数组，表明该模块的依赖性。
+ 	非AMD模块输出（符合AMD规范即使用define来申明模块）
+ 	require.config({
+ 		shim: {
+ 			"underscore": {exports: "_";},
+ 			"jquery.form": {deps: ["jquery"]}//jquery.form插件
+ 		}
+ 	})
+ 	require(["underscore"], function(_){
+ 		_.each([1,2,3], alert);
+ 	})
+ 	require(["jquery", "jquery.form"], function($){
+	    $(function(){
+	        $("#form").ajaxSubmit({...});
+	    })
+	})
+ 插件：
+ 	domready插件，可以让回调函数在页面DOM结构加载完成后再运行。
+ 	text和image插件，则是允许require.js加载文本和图片文件。
+ 	json和mdown，用于加载json文件和markdown文件。
